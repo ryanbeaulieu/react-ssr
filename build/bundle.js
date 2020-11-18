@@ -173,13 +173,15 @@ app.use(_express2.default.static('public'));
 app.get("*", function (req, res) {
     var store = (0, _createStore2.default)();
 
-    (0, _reactRouterConfig.matchRoutes)(_Routes2.default, req.path).map(function (_ref) {
+    var promises = (0, _reactRouterConfig.matchRoutes)(_Routes2.default, req.path).map(function (_ref) {
         var route = _ref.route;
 
-        return route.loadData ? route.loadData() : null;
+        return route.loadData ? route.loadData(store) : null;
     });
 
-    res.send((0, _renderer2.default)(req, store));
+    Promise.all(promises).then(function () {
+        res.send((0, _renderer2.default)(req, store));
+    });
 });
 
 app.listen(3000, function () {
@@ -410,8 +412,9 @@ var mapStateToProps = function mapStateToProps(state) {
     };
 };
 
-var loadData = exports.loadData = function loadData() {
-    console.log("Trying to load data");
+//Used to load data from the server
+var loadData = exports.loadData = function loadData(store) {
+    return store.dispatch((0, _actions.fetchUsers)());
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchUsers: _actions.fetchUsers })(UsersList);
