@@ -1,15 +1,27 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { fetchUsers } from '../../actions';
+import { Helmet } from 'react-helmet';
 
 class UsersList extends Component {
+    
     componentDidMount() {
         this.props.fetchUsers();
+    }
+
+    setMetaTags() {
+        return (
+            <Helmet>
+                <title>{`${this.props.users.length} users loaded`}</title>
+                <meta property="og:title" content="Meta Tag title" />
+            </Helmet>
+        )
     }
 
     render() {
         return (
             <div>
+                {this.setMetaTags()}
                 This is a list of users
                 <ul>
                     {this.props.users.map(user => {
@@ -28,8 +40,11 @@ const mapStateToProps = (state) => {
 }
 
 //Used to load data from the server
-export const loadData = (store) => {
+const loadData = (store) => {
     return store.dispatch(fetchUsers());
 }
 
-export default connect (mapStateToProps, { fetchUsers })(UsersList);
+export default {
+    component: connect (mapStateToProps, { fetchUsers })(UsersList),
+    loadData
+};
