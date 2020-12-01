@@ -4,10 +4,12 @@ import Header from './components/Header/Header';
 import { fetchCurrentUser} from './actions';
 
 const App = ({route}) => {
-    return <div>
-        <Header />
-        {renderRoutes(route.routes)}
-        </div>
+    return (
+        <>
+            <Header />
+            {renderRoutes(route.routes)}
+        </>
+    );
 }
 
 

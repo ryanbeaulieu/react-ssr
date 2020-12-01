@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 import Routes from './Routes';
 import reducers from './reducers';
 import {renderRoutes} from 'react-router-config';
+import { ThemeProvider } from '@material-ui/core';
+import theme from './theme/theme';
 
 const axiosInstance = axios.create({
     baseURL: '/api'
@@ -18,9 +20,11 @@ const axiosInstance = axios.create({
 const store = createStore(reducers, window.INITIAL_STATE, applyMiddleware(thunk.withExtraArgument(axiosInstance)));
 
 ReactDOM.hydrate(
-    <Provider store={store}>
-        <BrowserRouter>
-            {renderRoutes(Routes)}
-        </BrowserRouter>
-    </Provider>, 
+    <ThemeProvider theme={theme}>
+        <Provider store={store}>
+            <BrowserRouter>
+                {renderRoutes(Routes)}
+            </BrowserRouter>
+        </Provider>
+    </ThemeProvider>, 
     document.querySelector("#root"));
