@@ -1,5 +1,5 @@
 // Startup point for the client side application
-import 'babel-polyfill';
+import '@babel/polyfill';
 import React from 'react';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
